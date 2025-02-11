@@ -1,0 +1,29 @@
+name: /lisc/scratch/cube/pfundner/envs/krona
+channels:
+  - bioconda
+  - defaults
+  - conda-forge
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - _openmp_mutex=5.1=1_gnu
+  - c-ares=1.19.1=h5eee18b_0
+  - ca-certificates=2024.12.31=h06a4308_0
+  - curl=8.11.1=hdbd6064_0
+  - krb5=1.20.1=h143b758_1
+  - krona=2.8.1=pl5321hdfd78af_1
+  - libcurl=8.11.1=hc9e6f67_0
+  - libedit=3.1.20230828=h5eee18b_0
+  - libev=4.33=h7f8727e_1
+  - libgcc-ng=11.2.0=h1234567_1
+  - libgomp=11.2.0=h1234567_1
+  - libnghttp2=1.57.0=h2d74bed_0
+  - libssh2=1.11.1=h251f7ec_0
+  - libstdcxx-ng=11.2.0=h1234567_1
+  - lz4-c=1.9.4=h6a678d5_1
+  - ncurses=6.4=h6a678d5_0
+  - openssl=3.0.15=h5eee18b_0
+  - perl=5.38.2=0_h5eee18b_perl5
+  - xz=5.4.6=h5eee18b_1
+  - zlib=1.2.13=h5eee18b_1
+  - zstd=1.5.6=hc292b87_0
+prefix: /lisc/scratch/cube/pfundner/envs/krona
