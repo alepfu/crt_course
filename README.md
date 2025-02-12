@@ -14,9 +14,7 @@ This workflow is designed for SLURM-based HPC clusters and supports configuratio
 
 1. Make sure Conda and Snakemake is available
 
-2. Edit the `config.yaml` file:
-
-- Adjust sample names, file paths, and parameters.
+2. Edit the `config.yaml` file: adjust sample names, file paths, and parameters.
 
 3. Submit the Snakemake workflow using the SLURM profile:
 
