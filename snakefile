@@ -1,10 +1,9 @@
+configfile: 'config.yaml'
 
-subset_frac = 0.01
-kraken_db = '/lisc/scratch/mirror/kraken2/kraken_standard_db/'
-
-reads_dir = '/lisc/project/cube/prospectomics/original_data/metagenomics/rodrigues-soares_2024-06-28/'
-samples = ['Z12-C14']
-
+subset_frac = config['subset_frac']
+kraken_db = config['kraken_db']
+reads_dir = config['reads_dir']
+samples = config['samples']
 
 rule all:
     input:
