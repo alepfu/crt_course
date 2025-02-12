@@ -1,1 +1,1 @@
-# Taxonomic analysis with Kraken and Kaiju
+# Taxonomic analysis with Kraken and Krona
