@@ -43,3 +43,4 @@ The workflow generates the following results:
 - License: GPL
 - Kraken2: Developed by Wood & Salzberg (2019)
 - Krona: Developed by Ondov et al. (2011)
+- Seqtk: Developed by Heng Li (2013)
