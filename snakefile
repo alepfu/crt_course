@@ -1,15 +1,29 @@
+# Load configuration settings from an external YAML file.
+# This allows users to modify parameters without changing the Snakefile.
 configfile: 'config.yaml'
 
+# Extract parameters from the configuration file.
+#   subset_frac: Fraction of reads to subset to.
+#   kraken_db: Path to the Kraken database.
+#   reads_dir: Directory where raw sequencing reads are stored.
+#   samples: List of sample names to be processed.
 subset_frac = config['subset_frac']
 kraken_db = config['kraken_db']
 reads_dir = config['reads_dir']
 samples = config['samples']
 
 rule all:
+    '''
+    Final target rule that ensures the workflow runs all necessary steps.
+    Produces the final visualization reports for all samples.
+    '''
     input:
         expand('results/{sample}_kraken_krona_report.html', sample=samples)
 
 rule stage_data:
+    '''
+    Stage reads by copying them into a structured directory.
+    '''
     output:
         reads1 = 'data/{sample}_1.fastq.gz',
         reads2 = 'data/{sample}_2.fastq.gz'
@@ -24,6 +38,9 @@ rule stage_data:
         '''
 
 rule subset_reads:
+    '''
+    Subset a fraction of readsm. Uses seqtk to randomly sample reads.
+    '''
     input:
         reads1 = rules.stage_data.output.reads1,
         reads2 = rules.stage_data.output.reads2
@@ -47,6 +64,10 @@ rule subset_reads:
         '''
 
 rule kraken:
+    '''
+    Classify reads using Kraken2 against the specified database.
+    Generates a taxonomic classification report for each sample.
+    '''
     input:
         reads1 = rules.subset_reads.output.subset_reads1,
         reads2 = rules.subset_reads.output.subset_reads2
@@ -76,6 +97,9 @@ rule kraken:
         '''
 
 rule convert_kraken_report:
+    '''
+    Convert Kraken2 classification reports to Krona-compatible format.
+    '''
     input:
         rules.kraken.output.kraken_report
     output:
@@ -92,6 +116,9 @@ rule convert_kraken_report:
         '''
 
 rule viz_kraken:
+    '''
+    Produces an HTML report summarizing taxonomic classifications using Krona.
+    '''
     input:
         rules.convert_kraken_report.output.kraken_report_converted
     output:
