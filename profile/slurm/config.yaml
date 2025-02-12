@@ -1,0 +1,22 @@
+executor: slurm
+default-resources:
+  mem_mb: 1000
+  cpus_per_task: 1
+  runtime: 1h
+jobs: 1
+
+max-jobs-per-second: 20
+printshellcmds: True
+
+latency-wait: 60
+sdm:
+  - conda
+
+default-storage-provider: fs
+local-storage-prefix: $PWD/local_storage
+remote-job-local-storage-prefix: \$TMPDIR
+shared-fs-usage:
+  - persistence
+  - software-deployment
+  - sources
+  - source-cache

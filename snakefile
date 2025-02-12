@@ -1,25 +1,40 @@
 
 subset_frac = 0.01
 kraken_db = '/lisc/scratch/mirror/kraken2/kraken_standard_db/'
-kaiju_db = '/lisc/project/cube/prospectomics/databases/kaiju_nr/'
+
+reads_dir = '/lisc/project/cube/prospectomics/original_data/metagenomics/rodrigues-soares_2024-06-28/'
+samples = ['Z12-C14']
 
 
 rule all:
     input:
-        expand('results/{sample}_kraken_krona_report.html')
-        #expand('results/{sample}_kaiju_krona_report.html')
+        expand('results/{sample}_kraken_krona_report.html', sample=samples)
+
+rule stage_data:
+    output:
+        reads1 = 'data/{sample}_1.fastq.gz',
+        reads2 = 'data/{sample}_2.fastq.gz'
+    localrule:
+        True
+    params:
+        reads_dir = reads_dir
+    shell:
+        '''
+        cp {params.reads_dir}*{wildcards.sample}*PE.1.fastq.gz {output.reads1}
+        cp {params.reads_dir}*{wildcards.sample}*PE.2.fastq.gz {output.reads2}
+        '''
 
 rule subset_reads:
     input:
-        reads1 = 'data/{sample}_1.fastq.gz',
-        reads2 = 'data/{sample}_2.fastq.gz'
+        reads1 = rules.stage_data.output.reads1,
+        reads2 = rules.stage_data.output.reads2
     output:
         subset_reads1 = 'results/{sample}_1.subset.fastq.gz',
         subset_reads2 = 'results/{sample}_2.subset.fastq.gz',
     log:
         'logs/{sample}_subset_reads.log'
     conda:
-        'envs/seqtk.yml'
+        'envs/seqtk.yaml'
     params:
         subset_frac = subset_frac
     resources:
@@ -28,8 +43,8 @@ rule subset_reads:
         time = '2:00:00'
     shell:
         '''
-        seqtk sample -s seed=42 {input.reads_1} {params.subset_frac} | gzip > {output.subset_reads1}
-        seqtk sample -s seed=42 {input.reads_2} {params.subset_frac} | gzip > {output.subset_reads2}
+        seqtk sample -s seed=42 {input.reads1} {params.subset_frac} | gzip > {output.subset_reads1}
+        seqtk sample -s seed=42 {input.reads2} {params.subset_frac} | gzip > {output.subset_reads2}
         '''
 
 rule kraken:
@@ -39,7 +54,7 @@ rule kraken:
     output:
         kraken_report = 'results/{sample}_kraken_report.tsv'
     conda:
-        'envs/kraken.yml'
+        'envs/kraken.yaml'
     params:
         kraken_db = kraken_db
     resources:
@@ -56,7 +71,7 @@ rule kraken:
             --gzip-compressed \
             --use-names \
             --paired \
-            --report {ouput.kraken_report} \
+            --report {output.kraken_report} \
             {input.reads1} \
             {input.reads2}
         '''
@@ -67,7 +82,7 @@ rule convert_kraken_report:
     output:
         kraken_report_converted = 'results/{sample}_kraken_report_converted.tsv'
     conda:
-        'envs/krakentools.yml'
+        'envs/krakentools.yaml'
     localrule:
         True
     log:
@@ -85,7 +100,7 @@ rule viz_kraken:
     localrule:
         True
     conda:
-        'envs/krona.yml'
+        'envs/krona.yaml'
     log:
         'logs/{sample}_viz_kraken.log'
     shell:
