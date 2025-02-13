@@ -150,4 +150,6 @@ rule analyze_kraken:
     log:
         'logs/{sample}_analyze_kraken.log'
     script:
-        'python scripts/analyze_kraken.py --input {input} --output {output}'
+        '''
+        python scripts/analyze_kraken.py --input {input} --output {output}
+        '''
