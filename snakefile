@@ -19,7 +19,7 @@ rule all:
     '''
     input:
         expand('results/{sample}_kraken_krona_report.html', sample=samples),
-        expand('results/{sample}_kraken_summary.txt', sample=samples),
+        expand('results/{sample}_kraken_summary.txt', sample=samples)
 
 rule stage_data:
     '''
@@ -146,7 +146,7 @@ rule analyze_kraken:
     conda:
         'envs/pandas.yaml'
     localrule:
-            True
+        True
     log:
         'logs/{sample}_analyze_kraken.log'
     script:
