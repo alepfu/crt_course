@@ -65,7 +65,7 @@ rule subset_reads:
 
 rule kraken:
     '''
-    Classify reads using Kraken2 against the specified database.
+    Classify reads using Kraken against the specified database.
     Generates a taxonomic classification report for each sample.
     '''
     input:
@@ -98,7 +98,7 @@ rule kraken:
 
 rule convert_kraken_report:
     '''
-    Convert Kraken2 classification reports to Krona-compatible format.
+    Convert Kraken classification reports to Krona-compatible format.
     '''
     input:
         rules.kraken.output.kraken_report
@@ -133,3 +133,20 @@ rule viz_kraken:
         '''
         ktImportText {input} -o {output}
         '''
+
+rule analyze_kraken:
+    '''
+    Analyze Kraken classification reports using a custom Python script.
+    '''
+    input:
+        rules.kraken.output.kraken_report
+    output:
+        'results/{sample}_kraken_summary.txt'
+    conda:
+        'envs/pandas.yaml'
+    localrule:
+            True
+    log:
+        'logs/{sample}_analyze_kraken.log'
+    script:
+        'python scripts/analyze_kraken.py --input {input} --output {output}'
