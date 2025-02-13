@@ -149,7 +149,7 @@ rule analyze_kraken:
         True
     log:
         'logs/{sample}_analyze_kraken.log'
-    script:
+    shell:
         '''
         python scripts/analyze_kraken.py --input {input} --output {output}
         '''
