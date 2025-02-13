@@ -18,7 +18,8 @@ rule all:
     Produces the final visualization reports for all samples.
     '''
     input:
-        expand('results/{sample}_kraken_krona_report.html', sample=samples)
+        expand('results/{sample}_kraken_krona_report.html', sample=samples),
+        expand('results/{sample}_kraken_summary.txt', sample=samples),
 
 rule stage_data:
     '''
