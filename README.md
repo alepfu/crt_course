@@ -21,6 +21,7 @@ This workflow is designed for SLURM-based HPC clusters and supports configuratio
 ```bash
 snakemake --profile profile/slurm
 ```
+<img src="dag.png" alt="dag" width="200"/>
 
 ## Expected Outputs
 
